@@ -10,9 +10,93 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
 
+const writeFileAsync = util.promisify(fs.writeFile);
 
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
+
+
+
+function promptEmployee() {
+    return inquirer.prompt([
+
+        {
+            type: "input",
+            name: "name",
+            message: "Please enter employees name: "
+        },
+        {
+            type: "input",
+            name: "id",
+            message: "Please enter employees ID number: "
+        },
+        {
+            type: "input",
+            name: "email",
+            message: "Please enter employees email: "
+        },
+        {
+            type: "list",
+            name: "role",
+            message: "Please enter employees role: ",
+            choices: [
+                "Manager",
+                "Engineer",
+                "Intern"
+            ]
+        },
+    ])
+}
+
+function promptManager() {
+    return inquirer.prompt([
+        {
+            type: "input",
+            name: "oficeNumber",
+            message: "Please enter employees office number "
+        },
+
+    ])
+}
+function promptEngineer() {
+    return inquirer.prompt([
+        {
+            type: "input",
+            name: "github",
+            message: "Please enter employees GitHub account name "
+        },
+
+    ])
+}
+function promptIntern() {
+    return inquirer.prompt([
+        {
+            type: "input",
+            name: "school",
+            message: "Please enter employees school name: "
+        },
+
+    ])
+}
+
+var generateHTML = require('./utils/generateMarkdown');
+
+async function init() {
+    console.log("Please answer the following questions to generate your Readme")
+    try {
+        const data = await promptUser();
+
+        const markdown = await generateMarkdown(data);
+
+        await writeFileAsync("README.md", markdown);
+
+        console.log("Successfully wrote your Readme file")
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+init();
 
 // After the user has input all employees desired, call the `render` function (required
 // above) and pass in an array containing all employee objects; the `render` function will
