@@ -47,9 +47,27 @@ function promptEmployee() {
             ]
         },
     ]).then((answer) => {
-        if (answer === "Mangager") {
+        if (answer.role === "Manager") {
+            employee = new Employee(answer.name, answer.id, answer.email)
+            function promptManager() {
+                return inquirer.prompt([
+                    {
+                        type: "input",
+                        name: "officeNumber",
+                        message: "Please enter employees office number "
+                    },
+
+                ]).then((answer) => {
+                    console.log(Manager.officeNumber)
+                    manager = new Manager(employee.name, employee.id, employee.email, answer.officeNumber)
+                    employeesArr.push(manager)
+                    console.log(employeesArr)
+                })
+            }
+
+
             promptManager();
-        } else if (answer === "Engineer") {
+        } else if (answer.role === "Engineer") {
             promptEngineer();
         } else {
             promptIntern();
@@ -57,16 +75,7 @@ function promptEmployee() {
     })
 }
 
-function promptManager() {
-    return inquirer.prompt([
-        {
-            type: "input",
-            name: "oficeNumber",
-            message: "Please enter employees office number "
-        },
 
-    ])
-}
 function promptEngineer() {
     return inquirer.prompt([
         {
@@ -87,10 +96,31 @@ function promptIntern() {
 
     ])
 }
+let employeesArr = []
 
 
+let employee = {
+    employeeResponse: async function () {
+        const response = await promptEmployee();
+        console.log(employee)
+        console.log(response)
+    },
+
+    isManager: async function () {
+        console.log("hey")
+        role = new Manager(this.name, this.id, this.email, this.officeNumber)
+    },
+    isEngineer: async function () {
 
 
+        role = new Engineer(this.name, this.id, this.email, this.github)
+    },
+    isIntern: async function () {
+
+        role = new Intern(this.name, this.id, this.email, this.school)
+
+    }
+}
 
 async function init() {
     console.log("Please answer the following questions to generate your Readme")
@@ -98,43 +128,23 @@ async function init() {
         const data = await promptEmployee();
 
 
-        let employee = {
-            employeeResponse: async function () {
-                const response = await promptEmployee();
-                console.log(employee)
-                console.log(response)
-            },
 
-            isManager: async function () {
-
-                role = new Manager(this.name, this.id, this.email, this.officeNumber)
-            },
-            isEngineer: async function () {
+        // } catch (err) {
+        //     console.log(err);
+        // }
+        // }
 
 
-                role = new Engineer(this.name, this.id, this.email, this.github)
-            },
-            isIntern: async function () {
+        const markdown = JSON.stringify(data)
 
-                role = new Intern(this.name, this.id, this.email, this.school)
+        await writeFileAsync("README.md", markdown);
 
-            }
-        }
+
     } catch (err) {
         console.log(err);
     }
 }
 
-//
-// const markdown = JSON.stringify(data)
-
-// await writeFileAsync("README.md", markdown);
-//
-//    console.log("Successfully wrote your Readme file")
-//  } catch (err) {
-//      console.log(err);
-//   }
-//}
 
 init();
 
