@@ -4,11 +4,12 @@ const Intern = require("./lib/Intern");
 const inquirer = require("inquirer");
 const path = require("path");
 const fs = require("fs");
-
+const util = require('util')
 const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
+const Employee = require("./lib/Employee");
 
 const writeFileAsync = util.promisify(fs.writeFile);
 
@@ -45,7 +46,15 @@ function promptEmployee() {
                 "Intern"
             ]
         },
-    ])
+    ]).then((answer) => {
+        if (answer === "Mangager") {
+            promptManager();
+        } else if (answer === "Engineer") {
+            promptEngineer();
+        } else {
+            promptIntern();
+        }
+    })
 }
 
 function promptManager() {
@@ -79,22 +88,53 @@ function promptIntern() {
     ])
 }
 
-var generateHTML = require('./utils/generateMarkdown');
+
+
+
 
 async function init() {
     console.log("Please answer the following questions to generate your Readme")
     try {
-        const data = await promptUser();
+        const data = await promptEmployee();
 
-        const markdown = await generateMarkdown(data);
 
-        await writeFileAsync("README.md", markdown);
+        let employee = {
+            employeeResponse: async function () {
+                const response = await promptEmployee();
+                console.log(employee)
+                console.log(response)
+            },
 
-        console.log("Successfully wrote your Readme file")
+            isManager: async function () {
+
+                role = new Manager(this.name, this.id, this.email, this.officeNumber)
+            },
+            isEngineer: async function () {
+
+
+                role = new Engineer(this.name, this.id, this.email, this.github)
+            },
+            isIntern: async function () {
+
+                role = new Intern(this.name, this.id, this.email, this.school)
+
+            }
+        }
     } catch (err) {
         console.log(err);
     }
 }
+
+//
+// const markdown = JSON.stringify(data)
+
+// await writeFileAsync("README.md", markdown);
+//
+//    console.log("Successfully wrote your Readme file")
+//  } catch (err) {
+//      console.log(err);
+//   }
+//}
 
 init();
 
