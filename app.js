@@ -58,16 +58,28 @@ function promptEmployee() {
                     },
 
                 ]).then((answer) => {
-                    console.log(Manager.officeNumber)
-                    manager = new Manager(employee.name, employee.id, employee.email, answer.officeNumber)
+
+                    manager = new Manager(employee.name, employee.id, employee.email, answer.office)
                     employeesArr.push(manager)
                     console.log(employeesArr)
                 })
             }
-
-
             promptManager();
         } else if (answer.role === "Engineer") {
+            employee = new Employee(answer.name, answer.id, answer.email)
+            function promptEngineer() {
+                return inquirer.prompt([
+                    {
+                        type: "input",
+                        name: "github",
+                        message: "Please enter employees GitHub account name "
+                    },
+                ]).then((answer) => {
+                    engineer = new Manager(employee.name, employee.id, employee.email, answer.github)
+                    employeesArr.push(engineer)
+                    console.log(employeesArr)
+                })
+            }
             promptEngineer();
         } else {
             promptIntern();
@@ -76,16 +88,7 @@ function promptEmployee() {
 }
 
 
-function promptEngineer() {
-    return inquirer.prompt([
-        {
-            type: "input",
-            name: "github",
-            message: "Please enter employees GitHub account name "
-        },
 
-    ])
-}
 function promptIntern() {
     return inquirer.prompt([
         {
