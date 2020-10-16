@@ -130,7 +130,14 @@ let employeesArr = []
 
 
 function runRender() {
-    render(employeesArr)
+    html = render(employeesArr)
+    fs.writeFile(outputPath, html, (err) => {
+        if (err) {
+            console.log(err)
+        } else {
+            console.log("Roster succesfully created")
+        }
+    })
 }
 
 
