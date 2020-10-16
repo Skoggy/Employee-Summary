@@ -61,6 +61,7 @@ function promptEmployee() {
                     manager = new Manager(employee.name, employee.id, employee.email, answer.officeNumber)
                     employeesArr.push(manager)
                     console.log(employeesArr)
+                    anotherEmployee()
                 })
             }
             promptManager();
@@ -74,8 +75,9 @@ function promptEmployee() {
                         message: "Please enter employees GitHub account name "
                     },
                 ]).then((answer) => {
-                    engineer = new Manager(employee.name, employee.id, employee.email, answer.github)
+                    engineer = new Engineer(employee.name, employee.id, employee.email, answer.github)
                     employeesArr.push(engineer)
+                    anotherEmployee()
                 })
             }
             promptEngineer();
@@ -91,6 +93,7 @@ function promptEmployee() {
                 ]).then((answer) => {
                     intern = new Intern(employee.name, employee.id, employee.email, answer.school)
                     employeesArr.push(intern)
+                    anotherEmployee()
                 })
             }
             promptIntern();
@@ -98,10 +101,37 @@ function promptEmployee() {
     })
 }
 
+
+function anotherEmployee() {
+    return inquirer.prompt([
+        {
+            type: "list",
+            name: "anotherEmp",
+            message: "Would you like to add another employee?",
+            choices: ["yes",
+                "no"]
+        }
+    ]).then((answer) => {
+        console.log(answer.anotherEmp)
+        if (answer.anotherEmp === "yes") {
+            promptEmployee()
+            console.log("Please enter in another employees information")
+            console.log(employeesArr)
+        } else {
+            console.log("come one now")
+            runRender();
+
+        }
+
+    })
+}
+
 let employeesArr = []
 
 
-
+function runRender() {
+    render(employeesArr)
+}
 
 
 promptEmployee();
