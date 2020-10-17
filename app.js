@@ -4,7 +4,7 @@ const Intern = require("./lib/Intern");
 const inquirer = require("inquirer");
 const path = require("path");
 const fs = require("fs");
-
+const chalk = require("chalk");
 const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 
@@ -14,23 +14,57 @@ const Employee = require("./lib/Employee");
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
 
+
+const textValidation = async (input) => {
+    if (input === "") {
+        console.log(chalk.red("Input Required"))
+        return false;
+    } else {
+        return true;
+    }
+}
+
+const emailValidation = async (email) => {
+    if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        return true;
+    }
+    else {
+        console.log(chalk.red("Please enter a valid Email address"))
+        return false;
+    }
+}
+
+const numberValidation = async (input) => {
+    if (isNaN(input)) {
+        console.log(chalk.red("Please enter a number"))
+        return false;
+
+    } else {
+
+        return true
+    }
+}
+
 function promptEmployee() {
     return inquirer.prompt([
 
         {
             type: "input",
             name: "name",
-            message: "Please enter employees name: "
+            message: "Please enter employees name: ",
+            validate: textValidation
         },
         {
             type: "input",
             name: "id",
-            message: "Please enter employees ID number: "
+            message: "Please enter employees ID number: ",
+            validate: numberValidation
         },
         {
             type: "input",
             name: "email",
-            message: "Please enter employees email: "
+            message: "Please enter employees email: ",
+            validate: emailValidation
         },
         {
             type: "list",
@@ -50,7 +84,8 @@ function promptEmployee() {
                     {
                         type: "input",
                         name: "officeNumber",
-                        message: "Please enter employees office number "
+                        message: "Please enter employees office number ",
+                        validate: numberValidation
                     },
 
                 ]).then((answer) => {
@@ -67,7 +102,8 @@ function promptEmployee() {
                     {
                         type: "input",
                         name: "github",
-                        message: "Please enter employees GitHub account name "
+                        message: "Please enter employees GitHub account name ",
+                        validate: textValidation
                     },
                 ]).then((answer) => {
                     engineer = new Engineer(employee.name, employee.id, employee.email, answer.github)
@@ -83,7 +119,8 @@ function promptEmployee() {
                     {
                         type: "input",
                         name: "school",
-                        message: "Please enter employees school name: "
+                        message: "Please enter employees school name: ",
+                        validate: textValidation
                     },
                 ]).then((answer) => {
                     intern = new Intern(employee.name, employee.id, employee.email, answer.school)
@@ -95,6 +132,7 @@ function promptEmployee() {
         }
     })
 }
+
 function anotherEmployee() {
     return inquirer.prompt([
         {
@@ -108,9 +146,7 @@ function anotherEmployee() {
         console.log(answer.anotherEmp)
         if (answer.anotherEmp === "yes") {
             promptEmployee()
-            console.log("Please enter in another employees information")
         } else {
-            console.log("come one now")
             runRender();
         }
     })
