@@ -1,0 +1,18 @@
+
+.intern-header {
+    background-color: #2b53a7;
+    color: white;
+}
+.engineer-header {
+    background-color:	#d6a444;
+}
+
+.manager-header {
+        background-color: #a71313;
+        color: white;
+}
+
+.team-area {
+    display: flex;
+    flex-wrap: wrap;
+}
