@@ -1,4 +1,10 @@
 
+.jumbotron {
+    background-color: cadetblue;
+}
+
+
+
 .intern-header {
     background-color: #2b53a7;
     color: white;
@@ -11,8 +17,12 @@
         background-color: #a71313;
         color: white;
 }
-
 .team-area {
     display: flex;
     flex-wrap: wrap;
+}
+
+.spacer {
+    flex-basis: 100%;
+    border: 3px, white;
 }
