@@ -160,7 +160,7 @@ function runRender() {
         if (err) {
             console.log(err)
         } else {
-            console.log("Roster succesfully created")
+            console.log(chalk.green("Roster succesfully created"))
         }
     })
 }
